@@ -26,15 +26,13 @@ function calculateSalesTax(salesData, taxRates) {
   var resultObj = {};
   for (var companyIndex in salesData) {
     var pathway = salesData[companyIndex];
-    var totalSales = 0;
+    var totalSales = pathway.sales.reduce((total, num) => { return total + num; });
     if (resultObj.hasOwnProperty(pathway.name)) {
       // company name in resultObj, need to += total sales and calc taxes
-      totalSales = pathway.sales.reduce((total, num) => { return total + num; });
       resultObj[pathway.name].totalSales += totalSales;
       resultObj[pathway.name].totalTaxes += totalSales * salesTaxRates[pathway.province];
     } else {
       // company name not in resultObj, need to add company name, total sales, calc taxes
-      totalSales = pathway.sales.reduce((total, num) => { return total + num; });
       resultObj[pathway.name] = {
         totalSales: totalSales,
         totalTaxes: totalSales * salesTaxRates[pathway.province]
